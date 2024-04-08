@@ -1,13 +1,20 @@
 {
-  "name": "db",
-  "version": "0.1.0",
-  "private": true,
+  "name": "grimoire",
+  "version": "1.0.0",
   "type": "module",
-  "scripts": {
-    "build": "webpack --mode production"
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/acornellier/grimoire.git"
   },
+  "author": "acornellier",
+  "license": "MIT",
+  "description": "Database for WoW spells",
   "engines": {
     "node": "20"
+  },
+  "scripts": {
+    "build": "vite build"
   },
   "dependencies": {
     "@types/node": "18.19.30",
@@ -18,9 +25,10 @@
   "devDependencies": {
     "@eslint/js": "9.0.0",
     "eslint": "9.0.0",
-    "prettier": "3.2.5",
+    "prettier": "3.`2.5",
     "typescript-eslint": "7.5.0",
     "vite": "5.2.8",
-    "vite-plugin-dts": "3.8.1"
+    "vite-plugin-dts": "3.8.1",
+    "vite-plugin-static-copy": "1.0.2"
   }
 }

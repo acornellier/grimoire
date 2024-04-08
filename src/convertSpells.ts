@@ -21,7 +21,7 @@ export async function convertSpells() {
     }
   })
 
-  await fs.writeFile(`${dirname}/../data/spells.json`, JSON.stringify(spells), 'utf-8')
+  await fs.writeFile(`${dirname}/data/spells.json`, JSON.stringify(spells), 'utf-8')
 }
 
 function getAoeSpells() {

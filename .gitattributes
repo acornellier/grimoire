@@ -1,6 +1,1 @@
-*.json filter=lfs diff=lfs merge=lfs -text
-src/wago/SpellMisc.json filter=lfs diff=lfs merge=lfs -text
-src/wago/SpellName.json filter=lfs diff=lfs merge=lfs -text
-src/wago/Difficulty.json filter=lfs diff=lfs merge=lfs -text
-src/wago/Spell.json filter=lfs diff=lfs merge=lfs -text
-src/wago/SpellEffect.json filter=lfs diff=lfs merge=lfs -text
+src/wago/*.json filter=lfs diff=lfs merge=lfs -text

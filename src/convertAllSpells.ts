@@ -22,11 +22,13 @@ export async function convertAllSpells(test?: boolean) {
     return convertSpell(ID)
   })
 
-  await fs.writeFile(
-    `${dirname}/../public/spells${test ? '-test' : ''}.json`,
-    JSON.stringify(spells),
-    'utf-8',
-  )
+  const destinationPath = `${dirname}/../public/spells${test ? '-test' : ''}.json`
+
+  await fs.mkdir(destinationPath.split(path.sep).slice(0, -1).join(path.sep), {
+    recursive: true,
+  })
+
+  await fs.writeFile(destinationPath, JSON.stringify(spells), 'utf-8')
 }
 
 export function convertSpell(id: number) {

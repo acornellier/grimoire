@@ -1,8 +1,10 @@
 {
-  "name": "grimoire",
-  "version": "1.0.0",
+  "name": "grimoire-wow",
+  "version": "0.1.0",
   "type": "module",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "main": "dist/index.js",
   "repository": {
     "type": "git",

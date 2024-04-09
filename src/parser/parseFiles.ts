@@ -22,7 +22,7 @@ export async function getWagoFiles() {
     {} as Record<number, string>,
   )
 
-  const destinationPath = `${dirname}/dbcJson/files.json`
+  const destinationPath = `${dirname}/../dbcJson/files.json`
 
   await fs.mkdir(destinationPath.split(path.sep).slice(0, -1).join(path.sep), {
     recursive: true,

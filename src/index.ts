@@ -4,6 +4,8 @@ import fs from 'fs'
 let spellsById: Record<number, Spell>
 
 export function initGrimoire(spellsJsonFile: string) {
+  if (spellsById) return
+
   const contents = fs.readFileSync(spellsJsonFile)
   const spells = JSON.parse(contents.toString()) as Spell[]
   spellsById = spells.reduce(

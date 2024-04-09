@@ -1,7 +1,8 @@
-import { getWagoAsset } from '../src/downloadTable'
+import { getWagoTable } from '../src/parser/parseTable.ts'
 
-const tableName = process.argv[2]
+const tables = process.argv.slice(2)
+if (!tables) throw new Error(`Missing table names`)
 
-if (!tableName) throw new Error(`Missing table name`)
-
-await getWagoAsset({ name: tableName })
+for (const table of tables) {
+  await getWagoTable(table)
+}

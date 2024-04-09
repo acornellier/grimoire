@@ -1,47 +1,78 @@
-import { wagoSpellEffects, wagoSpellMisc, wagoSpellNames, wagoSpells } from './wagoData'
+import {
+  dbcFiles,
+  dbcSpells,
+  spellEffectsBySpellId,
+  spellMiscBySpellId,
+  spellNamesById,
+} from './dbcData.ts'
 import { Spell } from './types'
 import fs from 'fs/promises'
 import { getDirname } from './files'
+import path from 'path'
+import { getDamage } from './damage.ts'
 
 const dirname = getDirname(import.meta.url)
 
-console.log('getting aoe spells')
+export async function convertSpells(test?: boolean) {
+  const spellsToConvert = test ? dbcSpells.splice(0, 1000) : dbcSpells
 
-const aoeSpells = getAoeSpells()
-
-export async function convertSpells() {
-  const spells: Spell[] = wagoSpells.map((wagoSpell, idx) => {
-    if (idx % 1000 === 0) console.log(`Converting spell ${idx + 1}/${wagoSpells.length}`)
-    const spellName = wagoSpellNames.find((spellName) => spellName.ID === wagoSpell.ID)
+  const spells: Spell[] = spellsToConvert.map(({ ID }, idx) => {
+    if (idx % 10000 === 0) console.log(`Converting spell ${idx + 1}/${dbcSpells.length}`)
 
     return {
-      id: wagoSpell.ID,
-      name: spellName?.Name_lang ?? 'Unknown',
-      aoe: aoeSpells.has(wagoSpell.ID),
+      id: ID,
+      name: spellNamesById[ID]?.Name_lang ?? 'Unknown',
+      icon: getIcon(ID),
+      damage: getDamage(ID),
+      aoe: isAoe(ID),
+      physical: isPhysical(ID),
+      variance: getVariance(ID),
     }
   })
 
-  await fs.writeFile(`${dirname}/data/spells.json`, JSON.stringify(spells), 'utf-8')
+  await fs.writeFile(
+    `${dirname}/../public/spells${test ? '-test' : ''}.json`,
+    JSON.stringify(spells),
+    'utf-8',
+  )
 }
 
-function getAoeSpells() {
-  const aoeSpells = new Set<number>()
+function getIcon(id: number) {
+  const spellMisc = spellMiscBySpellId[id]
+  if (!spellMisc) return 'inv_misc_questionmark'
 
-  for (const spellMisc of wagoSpellMisc) {
-    if ((spellMisc.Attributes_5 & 0x8000) > 0) aoeSpells.add(spellMisc.SpellID)
-  }
+  const file = dbcFiles[spellMisc?.SpellIconFileDataID]
+  if (!file) return 'inv_misc_questionmark'
 
-  for (const spellEffect of wagoSpellEffects) {
-    // 2 = Spell Damage
-    // 7 = Environmental Damage
-    // additionally must have some radius indication
-    if (
-      (spellEffect.Effect === 2 || spellEffect.Effect === 7) &&
-      (spellEffect.EffectRadiusIndex_0 > 0 || spellEffect.EffectRadiusIndex_1 > 0)
-    ) {
-      aoeSpells.add(spellEffect.SpellID)
-    }
-  }
+  return path.parse(file).name
+}
 
-  return aoeSpells
+function isAoe(id: number): boolean {
+  const spellMisc = spellMiscBySpellId[id]
+  if (spellMisc && (spellMisc.Attributes_5 & 0x8000) > 0) return true
+
+  const spellEffects = spellEffectsBySpellId[id]
+  return (
+    !!spellEffects &&
+    spellEffects.some(
+      ({ Effect, EffectRadiusIndex_0, EffectRadiusIndex_1 }) =>
+        (Effect === 2 || Effect === 7) &&
+        (EffectRadiusIndex_0 > 0 || EffectRadiusIndex_1 > 0),
+    )
+  )
+}
+
+function isPhysical(ID: number): boolean {
+  const spellMisc = spellMiscBySpellId[ID]
+  return !!spellMisc && spellMisc.SchoolMask === 1
+}
+
+function getVariance(id: number) {
+  const spellEffects = spellEffectsBySpellId[id]
+  if (!spellEffects) return 0
+
+  const damageEffect = spellEffects.find(({ Effect }) => Effect === 2)
+  if (!damageEffect) return 0
+
+  return damageEffect.Variance
 }

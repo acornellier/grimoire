@@ -1,34 +1,67 @@
-export interface Table {
+export interface Spell {
+  id: number
   name: string
+  icon: string
+  damage: number
+  aoe: boolean
+  physical: boolean
+  variance: number
 }
 
-export interface WagoSpell {
+export type Files = Record<number, string>
+
+export interface DbcSpell {
   ID: number
 }
 
-export interface WagoSpellName {
+export interface SpellName {
   ID: number
   Name_lang: string
 }
 
-export interface WagoSpellEffect {
+export interface SpellEffect {
   ID: number
   SpellID: number
+  DifficultyID: number
   Effect: number
+  EffectBasePointsF: number
   EffectRadiusIndex_0: number
   EffectRadiusIndex_1: number
+  Variance: number
 }
 
-export interface WagoSpellMisc {
+export interface SpellMisc {
   ID: number
   SpellID: number
   Attributes_5: number
+  SpellIconFileDataID: number
+  SchoolMask: number
+  ContentTuningID: number
 }
 
-export interface Spell {
-  id: number
-  name: string
-  // icon: string
-  aoe: boolean
-  // variance: number
+export interface ContentTuning {
+  ID: number
+  ExpansionID: number
+  MinLevel: number
+  MaxLevel: number
+}
+
+export interface ContentTuningXExpected {
+  ID: number
+  ExpectedStatModID: number
+  ContentTuningID: number
+  MinMythicPlusSeasonID: number
+  MaxMythicPlusSeasonID: number
+}
+
+export interface ExpectedStat {
+  ID: number
+  ExpansionID: number
+  CreatureSpellDamage: number
+  Lvl: number
+}
+
+export interface ExpectedStatMod {
+  ID: number
+  CreatureSpellDamageMod: number
 }

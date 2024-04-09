@@ -1,0 +1,3 @@
+[submodule "wow-dbc-archive"]
+	path = wow-dbc-archive
+	url = git@github.com:Vladinator/wow-dbc-archive.git

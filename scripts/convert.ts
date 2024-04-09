@@ -1,5 +1,7 @@
-import { convertSpells } from '../src/convertSpells'
+import { convertAllSpells, convertSpell } from '../src/convertAllSpells.ts'
 
-const test = process.argv[2] === '--test'
+const arg = process.argv[2]
+const testAll = arg === 'test'
 
-await convertSpells(test)
+if (arg && !testAll) console.log(convertSpell(Number(arg)))
+else await convertAllSpells(testAll)

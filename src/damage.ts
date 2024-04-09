@@ -10,10 +10,11 @@ import { ExpectedStatMod } from './types.ts'
 
 const level = 70
 const expansion = 9
-const mythicPlusSeasonId = 98 // S4 => 100
-const backupContentTuningId = 1279
 
-export function getDamage(spellId: number) {
+export function getDamage(spellId: number, season: 's3' | 's4') {
+  const mythicPlusSeasonId = season === 's3' ? 98 : 100 // S4 => 100
+  const backupContentTuningId = season === 's3' ? 1279 : 2157
+
   const spellEffect = spellEffectsBySpellId[spellId]
   if (!spellEffect) return 0
 
@@ -26,7 +27,7 @@ export function getDamage(spellId: number) {
   )
 
   const effect =
-    damageEffects[8] ?? // Mythic+, not used in S4?
+    damageEffects[8] ?? // Mythic+
     damageEffects[23] ?? // Mythic
     damageEffects[2] ?? // Heroic
     damageEffects[1] ?? // Normal

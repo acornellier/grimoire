@@ -2,7 +2,7 @@ export interface Spell {
   id: number
   name: string
   icon: string
-  damage: number
+  damage: { s3: number; s4: number }
   aoe: boolean
   physical: boolean
   variance: number
@@ -25,8 +25,8 @@ export interface SpellEffect {
   DifficultyID: number
   Effect: number
   EffectBasePointsF: number
-  EffectRadiusIndex_0: number
-  EffectRadiusIndex_1: number
+  ['EffectRadiusIndex[0]']: number
+  ['EffectRadiusIndex[1]']: number
   Variance: number
 }
 

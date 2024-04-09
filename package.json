@@ -15,8 +15,10 @@
     "node": "20"
   },
   "scripts": {
+    "parse": "tsx ./scripts/files.ts && tsx ./scripts/table.ts all",
+    "convert": "tsx ./scripts/convert.ts",
     "build": "vite build",
-    "full": "tsx ./scripts/convert.ts && yarn build"
+    "full": "yarn parse && yarn convert && yarn build"
   },
   "dependencies": {
     "@types/node": "18.19.30",

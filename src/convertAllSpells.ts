@@ -13,21 +13,13 @@ import { getDamage } from './damage.ts'
 
 const dirname = getDirname(import.meta.url)
 
-export async function convertSpells(test?: boolean) {
+export async function convertAllSpells(test?: boolean) {
   const spellsToConvert = test ? dbcSpells.splice(0, 1000) : dbcSpells
 
   const spells: Spell[] = spellsToConvert.map(({ ID }, idx) => {
     if (idx % 10000 === 0) console.log(`Converting spell ${idx + 1}/${dbcSpells.length}`)
 
-    return {
-      id: ID,
-      name: spellNamesById[ID]?.Name_lang ?? 'Unknown',
-      icon: getIcon(ID),
-      damage: getDamage(ID),
-      aoe: isAoe(ID),
-      physical: isPhysical(ID),
-      variance: getVariance(ID),
-    }
+    return convertSpell(ID)
   })
 
   await fs.writeFile(
@@ -35,6 +27,18 @@ export async function convertSpells(test?: boolean) {
     JSON.stringify(spells),
     'utf-8',
   )
+}
+
+export function convertSpell(id: number) {
+  return {
+    id: id,
+    name: spellNamesById[id]?.Name_lang ?? 'Unknown',
+    icon: getIcon(id),
+    damage: { s3: getDamage(id, 's3'), s4: getDamage(id, 's4') },
+    aoe: isAoe(id),
+    physical: isPhysical(id),
+    variance: getVariance(id),
+  }
 }
 
 function getIcon(id: number) {
@@ -55,9 +59,9 @@ function isAoe(id: number): boolean {
   return (
     !!spellEffects &&
     spellEffects.some(
-      ({ Effect, EffectRadiusIndex_0, EffectRadiusIndex_1 }) =>
-        (Effect === 2 || Effect === 7) &&
-        (EffectRadiusIndex_0 > 0 || EffectRadiusIndex_1 > 0),
+      (effect) =>
+        (effect.Effect === 2 || effect.Effect === 7) &&
+        (effect['EffectRadiusIndex[0]'] > 0 || effect['EffectRadiusIndex[1]'] > 0),
     )
   )
 }

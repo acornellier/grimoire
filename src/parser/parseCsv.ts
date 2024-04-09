@@ -1,6 +1,8 @@
 ﻿import { Options, parse } from 'csv-parse'
 import fs from 'fs/promises'
 
+const stringColumns: Array<string | number> = ['Name_lang']
+
 export async function parseCsvFile<U>(
   path: string,
   { columns, delimiter }: Options,
@@ -12,6 +14,10 @@ export async function parseCsvFile<U>(
     delimiter,
     cast: (value, context) => {
       if (context.header) {
+        return value
+      }
+
+      if (stringColumns.includes(context.column)) {
         return value
       }
 

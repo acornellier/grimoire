@@ -10,6 +10,7 @@ import fs from 'fs/promises'
 import { getDirname } from './files'
 import path from 'path'
 import { getDamage } from './damage.ts'
+import { SpellEffectType } from './constants.ts'
 
 const dirname = getDirname(import.meta.url)
 
@@ -17,7 +18,7 @@ export async function convertAllSpells(test?: boolean) {
   const spellsToConvert = test ? dbcSpells.splice(0, 1000) : dbcSpells
 
   const spells: Spell[] = spellsToConvert.map(({ ID }, idx) => {
-    if (idx % 10000 === 0) console.log(`Converting spell ${idx + 1}/${dbcSpells.length}`)
+    if (idx % 100000 === 0) console.log(`Converting spell ${idx + 1}/${dbcSpells.length}`)
 
     return convertSpell(ID)
   })
@@ -31,15 +32,18 @@ export async function convertAllSpells(test?: boolean) {
   await fs.writeFile(destinationPath, JSON.stringify(spells), 'utf-8')
 }
 
-export function convertSpell(id: number) {
+const optionalField = (field: keyof Spell, value: boolean | number) =>
+  value ? { [field]: value } : {}
+
+export function convertSpell(id: number): Spell {
   return {
     id: id,
     name: spellNamesById[id]?.Name_lang ?? 'Unknown',
     icon: getIcon(id),
-    damage: { s3: getDamage(id, 's3'), s4: getDamage(id, 's4') },
-    aoe: isAoe(id),
-    physical: isPhysical(id),
-    variance: getVariance(id),
+    ...getBothSeasonDamage(id),
+    ...optionalField('aoe', isAoe(id)),
+    ...optionalField('physical', isPhysical(id)),
+    ...optionalField('variance', getVariance(id)),
   }
 }
 
@@ -53,6 +57,12 @@ function getIcon(id: number) {
   return path.parse(file).name
 }
 
+function getBothSeasonDamage(id: number) {
+  const s3Damage = getDamage(id, 's3')
+  const s4Damage = getDamage(id, 's4')
+  return s3Damage || s4Damage ? { damage: { s3: s3Damage, s4: s4Damage } } : {}
+}
+
 function isAoe(id: number): boolean {
   const spellMisc = spellMiscBySpellId[id]
   if (spellMisc && (spellMisc.Attributes_5 & 0x8000) > 0) return true
@@ -62,7 +72,8 @@ function isAoe(id: number): boolean {
     !!spellEffects &&
     spellEffects.some(
       (effect) =>
-        (effect.Effect === 2 || effect.Effect === 7) &&
+        (effect.Effect === SpellEffectType.schoolDamage ||
+          effect.Effect === SpellEffectType.environmentalDamage) &&
         (effect['EffectRadiusIndex[0]'] > 0 || effect['EffectRadiusIndex[1]'] > 0),
     )
   )

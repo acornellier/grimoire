@@ -8,6 +8,7 @@ import {
   SpellEffect,
   SpellMisc,
   SpellName,
+  SpellRadius,
 } from './types'
 import { getDirname, parseJsonFile } from './files'
 import { groupBy, mapBy } from './util.ts'
@@ -27,6 +28,9 @@ export const spellEffectsBySpellId = groupBy(spellEffects, 'SpellID')
 
 export const spellMiscs = await parseDbcFile<SpellMisc>('spellmisc')
 export const spellMiscBySpellId = mapBy(spellMiscs, 'SpellID')
+
+export const spellRadiuses = await parseDbcFile<SpellRadius>('spellradius')
+export const spellRadiusesById = mapBy(spellRadiuses, 'ID')
 
 export const contentTunings = await parseDbcFile<ContentTuning>('contenttuning')
 export const contentTuningXExpecteds = await parseDbcFile<ContentTuningXExpected>(

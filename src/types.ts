@@ -1,11 +1,13 @@
+import { SpellEffectType } from './constants.ts'
+
 export interface Spell {
   id: number
   name: string
   icon: string
-  damage: { s3: number; s4: number }
-  aoe: boolean
-  physical: boolean
-  variance: number
+  damage?: { s3: number; s4: number }
+  aoe?: boolean
+  physical?: boolean
+  variance?: number
 }
 
 export type Files = Record<number, string>
@@ -24,7 +26,7 @@ export interface SpellEffect {
   SpellID: number
   EffectIndex: number
   DifficultyID: number
-  Effect: number
+  Effect: (typeof SpellEffectType)[keyof typeof SpellEffectType]
   EffectBasePointsF: number
   ['EffectRadiusIndex[0]']: number
   ['EffectRadiusIndex[1]']: number
@@ -38,6 +40,11 @@ export interface SpellMisc {
   SpellIconFileDataID: number
   SchoolMask: number
   ContentTuningID: number
+}
+
+export interface SpellRadius {
+  ID: number
+  Radius: number
 }
 
 export interface ContentTuning {

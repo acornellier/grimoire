@@ -14,6 +14,7 @@ if (tables[0] === 'all') {
     'spelleffect',
     'spellmisc',
     'spellname',
+    'spellradius',
   ]
 }
 

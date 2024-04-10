@@ -1,6 +1,6 @@
 {
   "name": "grimoire-wow",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "files": [
     "dist"
@@ -14,7 +14,7 @@
   "license": "MIT",
   "description": "Database for WoW spells",
   "engines": {
-    "node": "20"
+    "node": ">=18"
   },
   "scripts": {
     "parse": "tsx ./scripts/files.ts && tsx ./scripts/table.ts all",

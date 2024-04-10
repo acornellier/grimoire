@@ -22,6 +22,7 @@ export interface SpellName {
 export interface SpellEffect {
   ID: number
   SpellID: number
+  EffectIndex: number
   DifficultyID: number
   Effect: number
   EffectBasePointsF: number

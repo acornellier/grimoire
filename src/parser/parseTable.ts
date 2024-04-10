@@ -1,4 +1,4 @@
-import { getDirname } from '../files.ts'
+import { getDirname } from '../util/files.ts'
 import { parseCsvFile } from './parseCsv.ts'
 import fs from 'fs/promises'
 import path from 'path'

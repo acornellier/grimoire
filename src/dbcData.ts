@@ -10,8 +10,8 @@ import {
   SpellName,
   SpellRadius,
 } from './types'
-import { getDirname, parseJsonFile } from './files'
-import { groupBy, mapBy } from './util.ts'
+import { getDirname, parseJsonFile } from './util/files.ts'
+import { groupBy, mapBy } from './util/util.ts'
 
 const dirname = getDirname(import.meta.url)
 

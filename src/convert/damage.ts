@@ -4,9 +4,9 @@
   expectedStats,
   spellEffectsBySpellId,
   spellMiscBySpellId,
-} from './dbcData.ts'
-import { groupBy, mapBy } from './util.ts'
-import { ExpectedStatMod } from './types.ts'
+} from '../dbcData.ts'
+import { groupBy, mapBy } from '../util/util.ts'
+import { ExpectedStatMod } from '../types.ts'
 
 const level = 70
 const expansion = 9

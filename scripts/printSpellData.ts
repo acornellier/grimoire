@@ -1,5 +1,5 @@
 ﻿import { getGrimoireSpell, initGrimoire } from '../src'
-import { getDirname } from '../src/files.ts'
+import { getDirname } from '../src/util/files.ts'
 
 const dirname = getDirname(import.meta.url)
 

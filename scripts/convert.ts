@@ -1,4 +1,4 @@
-import { convertAllSpells, convertSpell } from '../src/convertAllSpells.ts'
+import { convertAllSpells, convertSpell } from '../src/convert/converter.ts'
 
 const arg = process.argv[2]
 const testAll = arg === 'test'

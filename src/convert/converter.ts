@@ -4,13 +4,13 @@ import {
   spellEffectsBySpellId,
   spellMiscBySpellId,
   spellNamesById,
-} from './dbcData.ts'
-import { Spell } from './types'
+} from '../dbcData.ts'
+import { Spell } from '../types.ts'
 import fs from 'fs/promises'
-import { getDirname } from './files'
+import { getDirname } from '../util/files.ts'
 import path from 'path'
 import { getDamage } from './damage.ts'
-import { SpellEffectType } from './constants.ts'
+import { SpellEffectType } from '../constants.ts'
 
 const dirname = getDirname(import.meta.url)
 

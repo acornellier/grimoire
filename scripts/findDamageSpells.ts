@@ -1,4 +1,4 @@
-﻿import { getDirname } from '../src/files.ts'
+﻿import { getDirname } from '../src/util/files.ts'
 import { findDamageSpellsWithName, initGrimoire } from '../src'
 
 const dirname = getDirname(import.meta.url)

@@ -4,7 +4,6 @@ import dts from 'vite-plugin-dts'
 
 export default defineConfig({
   build: {
-    minify: 'terser',
     lib: {
       formats: ['es'],
       entry: resolve(__dirname, 'src/index.ts'),

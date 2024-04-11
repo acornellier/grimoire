@@ -1,22 +1,15 @@
 import type { Spell } from './types.ts'
-import fs from 'fs'
+import spellsJson from './spells.json' assert { type: 'json' }
 
-let spells: Spell[]
-let spellsById: Record<number, Spell>
+const spells = spellsJson as Spell[]
 
-export function initGrimoire(spellsJsonFile: string) {
-  if (spellsById) return
-
-  const contents = fs.readFileSync(spellsJsonFile)
-  spells = JSON.parse(contents.toString()) as Spell[]
-  spellsById = spells.reduce(
-    (acc, spell) => {
-      acc[spell.id] = spell
-      return acc
-    },
-    {} as Record<number, Spell>,
-  )
-}
+const spellsById: Record<number, Spell> = spells.reduce(
+  (acc, spell) => {
+    acc[spell.id] = spell
+    return acc
+  },
+  {} as Record<number, Spell>,
+)
 
 export function getGrimoireSpell(spellId: number): Spell {
   const spell = spellsById[spellId]

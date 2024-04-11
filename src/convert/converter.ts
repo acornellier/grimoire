@@ -23,7 +23,7 @@ export async function convertAllSpells(test?: boolean) {
     return convertSpell(ID)
   })
 
-  const destinationPath = `${dirname}/../public/spells${test ? '-test' : ''}.json`
+  const destinationPath = `${dirname}/../spells${test ? '-test' : ''}.json`
 
   await fs.mkdir(destinationPath.split(path.sep).slice(0, -1).join(path.sep), {
     recursive: true,

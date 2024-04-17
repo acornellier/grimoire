@@ -1,6 +1,7 @@
 import {
   dbcFiles,
   dbcSpells,
+  spellCastTimesById,
   spellEffectsBySpellId,
   spellMiscBySpellId,
   spellNamesById,
@@ -44,6 +45,7 @@ export function convertSpell(id: number): Spell {
     ...optionalField('aoe', isAoe(id)),
     ...optionalField('physical', isPhysical(id)),
     ...optionalField('variance', getVariance(id)),
+    ...optionalField('castTime', getCastTime(id)),
   }
 }
 
@@ -92,4 +94,15 @@ function getVariance(id: number) {
   if (!damageEffect) return 0
 
   return damageEffect.Variance
+}
+
+function getCastTime(id: number) {
+  const spellMisc = spellMiscBySpellId[id]
+  if (!spellMisc) return 0
+
+  const castTimeIndex = spellMisc.CastingTimeIndex
+  if (castTimeIndex === 0 || castTimeIndex === 1) return 0
+
+  const castTime = spellCastTimesById[castTimeIndex]
+  return castTime?.Base ?? 0
 }

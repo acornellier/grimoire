@@ -8,6 +8,7 @@ export interface Spell {
   aoe?: boolean
   physical?: boolean
   variance?: number
+  castTime?: number
 }
 
 export type Files = Record<number, string>
@@ -40,11 +41,18 @@ export interface SpellMisc {
   SpellIconFileDataID: number
   SchoolMask: number
   ContentTuningID: number
+  CastingTimeIndex: number
 }
 
 export interface SpellRadius {
   ID: number
   Radius: number
+}
+
+export interface SpellCastTime {
+  ID: number
+  Base: number
+  Minimum: number
 }
 
 export interface ContentTuning {

@@ -5,6 +5,7 @@ import {
   ExpectedStat,
   ExpectedStatMod,
   Files,
+  SpellCastTime,
   SpellEffect,
   SpellMisc,
   SpellName,
@@ -31,6 +32,9 @@ export const spellMiscBySpellId = mapBy(spellMiscs, 'SpellID')
 
 export const spellRadiuses = await parseDbcFile<SpellRadius>('spellradius')
 export const spellRadiusesById = mapBy(spellRadiuses, 'ID')
+
+export const spellCastTimes = await parseDbcFile<SpellCastTime>('spellcasttimes')
+export const spellCastTimesById = mapBy(spellCastTimes, 'ID')
 
 export const contentTunings = await parseDbcFile<ContentTuning>('contenttuning')
 export const contentTuningXExpecteds = await parseDbcFile<ContentTuningXExpected>(

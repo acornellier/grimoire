@@ -41,7 +41,7 @@ export function convertSpell(id: number): Spell {
     id: id,
     name: spellNamesById[id]?.Name_lang ?? 'Unknown',
     icon: getIcon(id),
-    ...getBothSeasonDamage(id),
+    ...optionalField('damage', getDamage(id)),
     ...optionalField('aoe', isAoe(id)),
     ...optionalField('physical', isPhysical(id)),
     ...optionalField('variance', getVariance(id)),
@@ -57,12 +57,6 @@ function getIcon(id: number) {
   if (!file) return 'inv_misc_questionmark'
 
   return path.parse(file).name
-}
-
-function getBothSeasonDamage(id: number) {
-  const s3Damage = getDamage(id, 's3')
-  const s4Damage = getDamage(id, 's4')
-  return s3Damage || s4Damage ? { damage: { s3: s3Damage, s4: s4Damage } } : {}
 }
 
 function isAoe(id: number): boolean {

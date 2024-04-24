@@ -25,8 +25,8 @@ export function findDamageSpellsWithName(spellName: string): Spell[] {
   return spells.filter((spell) => {
     return (
       spell.name.toLowerCase().includes(spellName.toLowerCase()) &&
-      spell.damage &&
-      (spell.damage.s3 > 0 || spell.damage.s4 > 0)
+      spell.damage !== undefined &&
+      spell.damage > 0
     )
   })
 }

@@ -61,7 +61,7 @@ function getIcon(id: number) {
 
 function isAoe(id: number): boolean {
   const spellMisc = spellMiscBySpellId[id]
-  if (spellMisc && (spellMisc.Attributes_5 & 0x8000) > 0) return true
+  if (spellMisc && (spellMisc['Attributes[5]'] & 0x8000) > 0) return true
 
   const spellEffects = spellEffectsBySpellId[id]
   return (

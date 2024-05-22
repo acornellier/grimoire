@@ -37,7 +37,7 @@ export interface SpellEffect {
 export interface SpellMisc {
   ID: number
   SpellID: number
-  Attributes_5: number
+  ['Attributes[5]']: number
   SpellIconFileDataID: number
   SchoolMask: number
   ContentTuningID: number

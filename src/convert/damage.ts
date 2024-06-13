@@ -64,7 +64,7 @@ export function getDamage(spellId: number) {
       value *= mod.CreatureSpellDamageMod
     }
 
-    value *= 1.186105271
+    value *= 9.51442196754
 
     return Math.round(value / 100)
   })

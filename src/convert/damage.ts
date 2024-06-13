@@ -8,13 +8,12 @@
 import { groupBy, mapBy } from '../util/util.ts'
 import { ExpectedStatMod } from '../types.ts'
 
-const level = 70
-const expansion = 9
+const level = 80
+const expansion = 10
+const mythicPlusSeasonId = 101
+const backupContentTuningId = 1279
 
 export function getDamage(spellId: number) {
-  const mythicPlusSeasonId = 100
-  const backupContentTuningId = 1279
-
   const spellEffect = spellEffectsBySpellId[spellId]
   if (!spellEffect) return 0
 
@@ -63,8 +62,6 @@ export function getDamage(spellId: number) {
     for (const mod of mods) {
       value *= mod.CreatureSpellDamageMod
     }
-
-    value *= 9.51442196754
 
     return Math.round(value / 100)
   })

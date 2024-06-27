@@ -1,6 +1,6 @@
 {
   "name": "grimoire-wow",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "type": "module",
   "files": [
     "dist"
@@ -21,7 +21,7 @@
     "convert": "tsx ./scripts/convert.ts",
     "build": "vite build",
     "full": "yarn parse && yarn convert && yarn build",
-    "id": "tsx ./scripts/printSpellData.ts",
+    "id": "tsx ./scripts/id.ts",
     "table": "tsx ./scripts/table.ts"
   },
   "dependencies": {

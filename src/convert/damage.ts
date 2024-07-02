@@ -2,69 +2,44 @@
   contentTuningXExpecteds,
   expectedStatModsById,
   expectedStats,
-  spellEffectsBySpellId,
   spellMiscBySpellId,
 } from '../dbcData.ts'
-import { groupBy, mapBy } from '../util/util.ts'
-import { ExpectedStatMod } from '../types.ts'
+import { DbcSpellEffect, ExpectedStatMod } from '../types.ts'
 
 const level = 80
 const expansion = 10
 const mythicPlusSeasonId = 101
 const backupContentTuningId = 1279
 
-export function getDamage(spellId: number) {
-  const spellEffect = spellEffectsBySpellId[spellId]
-  if (!spellEffect) return 0
-
-  const spellMisc = spellMiscBySpellId[spellId]
+export function getDamage(effect: DbcSpellEffect): number {
+  const spellMisc = spellMiscBySpellId[effect.SpellID]
   if (!spellMisc) return 0
 
-  const effectIndexes = groupBy(spellEffect, 'EffectIndex')
+  const contentTuningId = spellMisc.ContentTuningID || backupContentTuningId
 
-  const effectDamages = Object.values(effectIndexes).map((effects) => {
-    const damageEffects = mapBy(
-      effects.filter(({ Effect }) => Effect === 2),
-      'DifficultyID',
+  const expectedStat = expectedStats
+    .filter(
+      ({ Lvl, ExpansionID }) =>
+        Lvl === level && (ExpansionID === expansion || ExpansionID === -2),
     )
+    .sort((a, b) => b.ExpansionID - a.ExpansionID)[0]
 
-    const effect =
-      damageEffects[8] ?? // Mythic+
-      damageEffects[23] ?? // Mythic
-      damageEffects[2] ?? // Heroic
-      damageEffects[1] ?? // Normal
-      damageEffects[0] // None
+  if (!expectedStat) throw new Error(`No expected stat for level ${level}`)
 
-    if (effect === undefined) return 0
+  const mods = contentTuningXExpecteds
+    .filter(({ ContentTuningID }) => ContentTuningID === contentTuningId)
+    .filter(
+      ({ MinMythicPlusSeasonID, MaxMythicPlusSeasonID }) =>
+        (MinMythicPlusSeasonID === 0 || mythicPlusSeasonId >= MinMythicPlusSeasonID) &&
+        (MaxMythicPlusSeasonID === 0 || mythicPlusSeasonId < MaxMythicPlusSeasonID),
+    )
+    .map(({ ExpectedStatModID }) => expectedStatModsById[ExpectedStatModID])
+    .filter((mod): mod is ExpectedStatMod => mod !== undefined)
 
-    const contentTuningId = spellMisc.ContentTuningID || backupContentTuningId
+  let value = expectedStat.CreatureSpellDamage * effect.EffectBasePointsF
+  for (const mod of mods) {
+    value *= mod.CreatureSpellDamageMod
+  }
 
-    const expectedStat = expectedStats
-      .filter(
-        ({ Lvl, ExpansionID }) =>
-          Lvl === level && (ExpansionID === expansion || ExpansionID === -2),
-      )
-      .sort((a, b) => b.ExpansionID - a.ExpansionID)[0]
-
-    if (!expectedStat) throw new Error(`No expected stat for level ${level}`)
-
-    const mods = contentTuningXExpecteds
-      .filter(({ ContentTuningID }) => ContentTuningID === contentTuningId)
-      .filter(
-        ({ MinMythicPlusSeasonID, MaxMythicPlusSeasonID }) =>
-          (MinMythicPlusSeasonID === 0 || mythicPlusSeasonId >= MinMythicPlusSeasonID) &&
-          (MaxMythicPlusSeasonID === 0 || mythicPlusSeasonId < MaxMythicPlusSeasonID),
-      )
-      .map(({ ExpectedStatModID }) => expectedStatModsById[ExpectedStatModID])
-      .filter((mod): mod is ExpectedStatMod => mod !== undefined)
-
-    let value = expectedStat.CreatureSpellDamage * effect.EffectBasePointsF
-    for (const mod of mods) {
-      value *= mod.CreatureSpellDamageMod
-    }
-
-    return Math.round(value / 100)
-  })
-
-  return effectDamages.reduce((acc, val) => acc + val, 0)
+  return Math.round(value / 100)
 }

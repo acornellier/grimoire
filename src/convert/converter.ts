@@ -48,7 +48,7 @@ export function convertSpell(id: number): Spell {
     id: id,
     name: spellNamesById[id]?.Name_lang ?? 'Unknown',
     icon: getIcon(id),
-    // ...optionalArrayField('effects', getEffects(id)),
+    ...optionalArrayField('effects', getEffects(id)),
     ...optionalArrayField('schools', getSchools(id)),
     ...optionalField('castTime', getCastTime(id)),
   }

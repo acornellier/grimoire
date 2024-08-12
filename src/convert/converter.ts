@@ -61,7 +61,7 @@ function getIcon(id: number) {
   const file = dbcFiles[spellMisc?.SpellIconFileDataID]
   if (!file) return 'inv_misc_questionmark'
 
-  return path.parse(file).name
+  return path.parse(file).name.replace(' ', '-')
 }
 
 function getEffects(id: number): SpellEffect[] | undefined {

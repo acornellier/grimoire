@@ -2,11 +2,11 @@ import {
   ContentTuning,
   ContentTuningXExpected,
   DbcSpell,
+  DbcSpellEffect,
   ExpectedStat,
   ExpectedStatMod,
   Files,
   SpellCastTime,
-  SpellEffect,
   SpellMisc,
   SpellName,
   SpellRadius,
@@ -24,7 +24,7 @@ export const dbcFiles = (await parseJsonFile(`${dirname}/dbcJson/files.json`)) a
 export const dbcSpells = await parseDbcFile<DbcSpell>('spell')
 export const spellNamesById = mapBy(await parseDbcFile<SpellName>('spellname'), 'ID')
 
-export const spellEffects = await parseDbcFile<SpellEffect>('spelleffect')
+export const spellEffects = await parseDbcFile<DbcSpellEffect>('spelleffect')
 export const spellEffectsBySpellId = groupBy(spellEffects, 'SpellID')
 
 export const spellMiscs = await parseDbcFile<SpellMisc>('spellmisc')

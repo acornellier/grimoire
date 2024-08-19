@@ -1,13 +1,17 @@
 import { SpellEffectType } from './constants.ts'
 
+export interface SpellEffect {
+  damage: number
+  variance: number
+  aoe: boolean
+}
+
 export interface Spell {
   id: number
   name: string
   icon: string
-  damage?: number
-  aoe?: boolean
-  physical?: boolean
-  variance?: number
+  effects?: SpellEffect[]
+  schools?: string[]
   castTime?: number
 }
 
@@ -22,7 +26,7 @@ export interface SpellName {
   Name_lang: string
 }
 
-export interface SpellEffect {
+export interface DbcSpellEffect {
   ID: number
   SpellID: number
   EffectIndex: number

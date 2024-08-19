@@ -21,14 +21,4 @@ export function getGrimoireSpell(spellId: number): Spell {
   return spell
 }
 
-export function findDamageSpellsWithName(spellName: string): Spell[] {
-  return spells.filter((spell) => {
-    return (
-      spell.name.toLowerCase().includes(spellName.toLowerCase()) &&
-      spell.damage !== undefined &&
-      spell.damage > 0
-    )
-  })
-}
-
 export type { Spell as GrimoireSpell }

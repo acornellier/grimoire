@@ -3,12 +3,16 @@ import fs from 'fs/promises'
 
 const stringColumns: Array<string | number> = ['Name_lang']
 
-export async function parseCsvFile<U>(
-  path: string,
-  { columns, delimiter }: Options,
-): Promise<U[]> {
+export async function parseCsvFile<U>(path: string, options: Options): Promise<U[]> {
   const contents = await fs.readFile(path)
 
+  return await parseCsvContents(contents, options)
+}
+
+export async function parseCsvContents<U>(
+  contents: Buffer | Uint8Array,
+  { columns, delimiter }: Options,
+): Promise<U[]> {
   const parser = parse({
     columns,
     delimiter,

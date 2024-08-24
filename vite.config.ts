@@ -4,6 +4,11 @@ import dts from 'vite-plugin-dts'
 
 export default defineConfig({
   build: {
+    minify: 'terser',
+    terserOptions: {
+      compress: true,
+      mangle: true,
+    },
     sourcemap: false,
     lib: {
       formats: ['es'],

@@ -9,7 +9,7 @@ import { DbcSpellEffect, ExpectedStatMod } from '../types.ts'
 const level = 80
 const expansion = 10
 const invalidExpansion = -2
-const mythicPlusSeasonId = 102
+const mythicPlusSeasonId = 103
 const backupContentTuningId = 1279
 
 const matchingExpectedStats = expectedStats

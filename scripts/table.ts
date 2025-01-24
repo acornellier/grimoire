@@ -16,6 +16,7 @@ if (tables[0] === 'all') {
     'spellmisc',
     'spellname',
     'spellradius',
+    'uimapassignment',
   ]
 }
 

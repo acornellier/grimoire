@@ -97,12 +97,12 @@ function getEffects(id: number): SpellEffect[] | undefined {
 
 function isAoe(effect: DbcSpellEffect): boolean {
   const spellMisc = spellMiscBySpellId[effect.SpellID]
-  if (spellMisc && (spellMisc['Attributes[5]'] & 0x8000) > 0) return true
+  if (spellMisc && (spellMisc.Attributes_5 & 0x8000) > 0) return true
 
   return (
     (effect.Effect === SpellEffectType.schoolDamage ||
       effect.Effect === SpellEffectType.environmentalDamage) &&
-    (effect['EffectRadiusIndex[0]'] > 0 || effect['EffectRadiusIndex[1]'] > 0)
+    (effect.EffectRadiusIndex_0 > 0 || effect.EffectRadiusIndex_1 > 0)
   )
 }
 

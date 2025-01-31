@@ -33,15 +33,15 @@ export interface DbcSpellEffect {
   DifficultyID: number
   Effect: (typeof SpellEffectType)[keyof typeof SpellEffectType]
   EffectBasePointsF: number
-  ['EffectRadiusIndex[0]']: number
-  ['EffectRadiusIndex[1]']: number
+  EffectRadiusIndex_0: number
+  EffectRadiusIndex_1: number
   Variance: number
 }
 
 export interface SpellMisc {
   ID: number
   SpellID: number
-  ['Attributes[5]']: number
+  Attributes_5: number
   SpellIconFileDataID: number
   SchoolMask: number
   ContentTuningID: number

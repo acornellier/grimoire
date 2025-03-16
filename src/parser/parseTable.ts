@@ -13,8 +13,8 @@ export async function submoduleCsvToJson(table: string) {
   await saveJsonFile(table, data)
 }
 
-export async function wagoCsvToJson(table: string) {
-  const url = `https://wago.tools/db2/${table}/csv`
+export async function wagoCsvToJson(table: string, build: string) {
+  const url = `https://wago.tools/db2/${table}/csv?build=${build}`
 
   const response = await fetch(url)
 

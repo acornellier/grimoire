@@ -1,5 +1,7 @@
 import { wagoCsvToJson } from '../src/parser/parseTable.ts'
 
+const build = '11.1.0.59679'
+
 let tables = process.argv.slice(2)
 if (!tables) throw new Error(`Missing table names`)
 
@@ -23,5 +25,5 @@ if (tables[0] === 'all') {
 for (const table of tables) {
   console.log(`Fetching ${table}...`)
   // await submoduleCsvToJson(table)
-  await wagoCsvToJson(table)
+  await wagoCsvToJson(table, build)
 }

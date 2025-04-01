@@ -27,10 +27,10 @@ if (matchingExpectedStats.length != 1)
 const expectedStat = matchingExpectedStats[0]!
 
 export function getDamage(effect: DbcSpellEffect): number {
-  const spellMisc = spellMiscBySpellId[effect.SpellID]
-  if (!spellMisc) return 0
+  const spellMiscs = spellMiscBySpellId[effect.SpellID]
+  if (!spellMiscs) return 0
 
-  const contentTuningId = spellMisc.ContentTuningID || backupContentTuningId
+  const contentTuningId = backupContentTuningId
 
   const validXExpecteds = contentTuningXExpecteds
     .filter(

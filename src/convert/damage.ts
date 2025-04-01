@@ -2,7 +2,7 @@
   contentTuningXExpecteds,
   expectedStatModsById,
   expectedStats,
-  spellMiscBySpellId,
+  getSpellMisc,
 } from '../dbcData.ts'
 import { DbcSpellEffect, ExpectedStatMod } from '../types.ts'
 
@@ -27,8 +27,8 @@ if (matchingExpectedStats.length != 1)
 const expectedStat = matchingExpectedStats[0]!
 
 export function getDamage(effect: DbcSpellEffect): number {
-  const spellMiscs = spellMiscBySpellId[effect.SpellID]
-  if (!spellMiscs) return 0
+  const spellMisc = getSpellMisc(effect.SpellID)
+  if (!spellMisc) return 0
 
   const contentTuningId = backupContentTuningId
 

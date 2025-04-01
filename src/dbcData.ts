@@ -27,8 +27,8 @@ export const spellNamesById = mapBy(await parseDbcFile<SpellName>('spellname'), 
 export const spellEffects = await parseDbcFile<DbcSpellEffect>('spelleffect')
 export const spellEffectsBySpellId = groupBy(spellEffects, 'SpellID')
 
-export const spellMiscs = await parseDbcFile<SpellMisc>('spellmisc')
-export const spellMiscBySpellId = mapBy(spellMiscs, 'SpellID')
+const spellMiscs = await parseDbcFile<SpellMisc>('spellmisc')
+const spellMiscsBySpellId = groupBy(spellMiscs, 'SpellID')
 
 export const spellRadiuses = await parseDbcFile<SpellRadius>('spellradius')
 export const spellRadiusesById = mapBy(spellRadiuses, 'ID')
@@ -44,3 +44,28 @@ export const contentTuningXExpecteds = await parseDbcFile<ContentTuningXExpected
 export const expectedStats = await parseDbcFile<ExpectedStat>('expectedstat')
 export const expectedStatMods = await parseDbcFile<ExpectedStatMod>('expectedstatmod')
 export const expectedStatModsById = mapBy(expectedStatMods, 'ID')
+
+const difficultyIds = {
+  mplus: 8,
+  mythic: 23,
+  heroic: 2,
+  normal: 1,
+  none: 0,
+}
+
+export function findByDifficulty<T extends { DifficultyID: number }>(items: T[]) {
+  const byDifficulty = mapBy(items, 'DifficultyID')
+  return (
+    byDifficulty[difficultyIds.mplus] ??
+    byDifficulty[difficultyIds.mythic] ??
+    byDifficulty[difficultyIds.heroic] ??
+    byDifficulty[difficultyIds.normal] ??
+    byDifficulty[difficultyIds.none]
+  )
+}
+
+export function getSpellMisc(spellId: number): SpellMisc | undefined {
+  const spellMiscs = spellMiscsBySpellId[spellId]
+  if (!spellMiscs) return undefined
+  return findByDifficulty(spellMiscs)
+}

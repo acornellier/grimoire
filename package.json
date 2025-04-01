@@ -1,6 +1,6 @@
 {
   "name": "grimoire-wow",
-  "version": "11.1.0-60037",
+  "version": "11.1.0-60037.1",
   "type": "module",
   "files": [
     "dist"

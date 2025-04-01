@@ -46,6 +46,7 @@ export interface SpellMisc {
   SchoolMask: number
   ContentTuningID: number
   CastingTimeIndex: number
+  DifficultyID: number
 }
 
 export interface SpellRadius {

@@ -1,9 +1,11 @@
 import {
   dbcFiles,
   dbcSpells,
+  findByDifficulty,
+  getSpellMisc,
   spellCastTimesById,
   spellEffectsBySpellId,
-  spellMiscBySpellId,
+  spellMiscsBySpellId,
   spellNamesById,
 } from '../dbcData.ts'
 import { DbcSpellEffect, Spell, SpellEffect } from '../types.ts'
@@ -12,7 +14,7 @@ import { getDirname } from '../util/files.ts'
 import path from 'path'
 import { getDamage } from './damage.ts'
 import { SpellEffectType } from '../constants.ts'
-import { groupBy, mapBy } from '../util/util.ts'
+import { groupBy } from '../util/util.ts'
 
 const dirname = getDirname(import.meta.url)
 
@@ -55,7 +57,7 @@ export function convertSpell(id: number): Spell {
 }
 
 function getIcon(id: number) {
-  const spellMisc = spellMiscBySpellId[id]
+  const spellMisc = getSpellMisc(id)
   if (!spellMisc) return 'inv_misc_questionmark'
 
   const file = dbcFiles[spellMisc?.SpellIconFileDataID]
@@ -72,17 +74,8 @@ function getEffects(id: number): SpellEffect[] | undefined {
 
   return Object.values(effectIndexes)
     .map<SpellEffect | undefined>((indexEffects) => {
-      const damageEffects = mapBy(
-        indexEffects.filter(({ Effect }) => Effect === 2),
-        'DifficultyID',
-      )
-
-      const effect =
-        damageEffects[8] ?? // Mythic+
-        damageEffects[23] ?? // Mythic
-        damageEffects[2] ?? // Heroic
-        damageEffects[1] ?? // Normal
-        damageEffects[0] // None
+      const damageEffects = indexEffects.filter(({ Effect }) => Effect === 2)
+      const effect = findByDifficulty(damageEffects)
 
       if (!effect) return undefined
 
@@ -96,7 +89,7 @@ function getEffects(id: number): SpellEffect[] | undefined {
 }
 
 function isAoe(effect: DbcSpellEffect): boolean {
-  const spellMisc = spellMiscBySpellId[effect.SpellID]
+  const spellMisc = getSpellMisc(effect.SpellID)
   if (spellMisc && (spellMisc.Attributes_5 & 0x8000) > 0) return true
 
   return (
@@ -116,8 +109,8 @@ const schools: Array<[number, string]> = [
   [64, 'arcane'],
 ]
 
-function getSchools(ID: number): string[] | undefined {
-  const spellMisc = spellMiscBySpellId[ID]
+function getSchools(id: number): string[] | undefined {
+  const spellMisc = getSpellMisc(id)
   if (!spellMisc || spellMisc.SchoolMask === 0) return undefined
 
   return schools.reduce((acc, [flag, school]) => {
@@ -137,7 +130,7 @@ function getVariance(dbcEffect: DbcSpellEffect) {
 }
 
 function getCastTime(id: number) {
-  const spellMisc = spellMiscBySpellId[id]
+  const spellMisc = getSpellMisc(id)
   if (!spellMisc) return 0
 
   const castTimeIndex = spellMisc.CastingTimeIndex

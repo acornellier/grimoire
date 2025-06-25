@@ -5,7 +5,6 @@ import {
   getSpellMisc,
   spellCastTimesById,
   spellEffectsBySpellId,
-  spellMiscsBySpellId,
   spellNamesById,
 } from '../dbcData.ts'
 import { DbcSpellEffect, Spell, SpellEffect } from '../types.ts'

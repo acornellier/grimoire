@@ -1,6 +1,6 @@
 import { wagoCsvToJson } from '../src/parser/parseTable.ts'
 
-const build = '11.2.0.62748'
+const build = '11.2.7.63853'
 
 let tables = process.argv.slice(2)
 if (!tables) throw new Error(`Missing table names`)

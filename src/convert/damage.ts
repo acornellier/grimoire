@@ -6,11 +6,12 @@
 } from '../dbcData.ts'
 import { DbcSpellEffect, ExpectedStatMod } from '../types.ts'
 
-const level = 80
-const expansion = 10
-const invalidExpansion = -2
-const mythicPlusSeasonId = 108
+const level = 90
+const expansion = 11
+const mythicPlusSeasonId = 117
+
 const backupContentTuningId = 1279
+const invalidExpansion = -2
 
 const matchingExpectedStats = expectedStats
   .filter(

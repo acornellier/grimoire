@@ -86,3 +86,22 @@ export interface ExpectedStatMod {
   ID: number
   CreatureSpellDamageMod: number
 }
+
+export interface TraitDefinition {
+  ID: number
+  SpellID: number
+  OverrideName_lang: number
+  OverrideSubtext_lang: number
+  OverrideDescription_lang: number
+  OverrideIcon: number
+  OverridesSpellID: number
+  VisibleSpellID: number
+}
+
+export interface TraitNodeEntry {
+  ID: number
+  TraitDefinitionID: number
+  MaxRanks: number
+  NodeEntryType: number
+  TraitSubTreeID: number
+}

@@ -1,6 +1,6 @@
 {
   "name": "grimoire-wow",
-  "version": "12.0.1-65940",
+  "version": "12.0.1-66527",
   "type": "module",
   "files": [
     "dist"
@@ -17,12 +17,14 @@
     "node": ">=22"
   },
   "scripts": {
+    "update-version": "tsx ./scripts/update-version.ts",
     "parse": "tsx ./scripts/files.ts && tsx ./scripts/table.ts all",
     "convert": "tsx ./scripts/convert.ts",
     "build": "cross-env NODE_OPTIONS=\"--max_old_space_size=8192\" vite build &&  esbuild dist/index.js --minify --outfile=dist/index.js --allow-overwrite",
-    "full": "yarn parse && yarn convert && yarn build",
+    "full": "yarn update-version && yarn parse && yarn convert && yarn build",
     "id": "tsx ./scripts/id.ts",
-    "table": "tsx ./scripts/table.ts"
+    "table": "tsx ./scripts/table.ts",
+    "trait": "tsx ./scripts/traitNodeEntry.ts"
   },
   "dependencies": {
     "@types/node": "22.10.10",

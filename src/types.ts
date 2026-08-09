@@ -1,9 +1,18 @@
 import { SpellEffectType } from './constants.ts'
 
 export interface SpellEffect {
+  // The effect's index in the DBC, so consumers can address an effect
+  // explicitly rather than by its position in this array.
+  index: number
   damage: number
   variance: number
   aoe: boolean
+  // Set on damage-over-time effects. `damage` is then the damage of a single
+  // tick, and `ticks` (absent when the spell's duration is unknown or
+  // infinite) is how many ticks a full duration deals.
+  periodic?: true
+  period?: number
+  ticks?: number
 }
 
 export interface Spell {
@@ -13,6 +22,7 @@ export interface Spell {
   effects?: SpellEffect[]
   schools?: string[]
   castTime?: number
+  duration?: number
 }
 
 export interface Grimoire {
@@ -37,6 +47,8 @@ export interface DbcSpellEffect {
   EffectIndex: number
   DifficultyID: number
   Effect: (typeof SpellEffectType)[keyof typeof SpellEffectType]
+  EffectAura: number
+  EffectAuraPeriod: number
   EffectBasePointsF: number
   EffectRadiusIndex_0: number
   EffectRadiusIndex_1: number
@@ -51,6 +63,7 @@ export interface SpellMisc {
   SchoolMask: number
   ContentTuningID: number
   CastingTimeIndex: number
+  DurationIndex: number
   DifficultyID: number
 }
 
@@ -63,6 +76,12 @@ export interface SpellCastTime {
   ID: number
   Base: number
   Minimum: number
+}
+
+export interface SpellDuration {
+  ID: number
+  Duration: number
+  MaxDuration: number
 }
 
 export interface ContentTuning {

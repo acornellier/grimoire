@@ -14,6 +14,7 @@ if (tables[0] === 'all') {
     'expectedstatmod',
     'spell',
     'spellcasttimes',
+    'spellduration',
     'spelleffect',
     'spellmisc',
     'spellname',

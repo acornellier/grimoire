@@ -1,7 +1,7 @@
-import type { Spell } from './types.ts'
+import type { Grimoire, Spell } from './types.ts'
 import spellsJson from './spells.json' assert { type: 'json' }
 
-const spells = spellsJson as Spell[]
+const { damageMultiplier, spells } = spellsJson as Grimoire
 
 const spellsById: Record<number, Spell> = spells.reduce(
   (acc, spell) => {
@@ -19,6 +19,12 @@ export function getGrimoireSpell(spellId: number): Spell {
   }
 
   return spell
+}
+
+// The factor an effect's base points are multiplied by to get its damage:
+// damage = round(damageMultiplier * EffectBasePointsF)
+export function getDamageMultiplier(): number {
+  return damageMultiplier
 }
 
 export type { Spell as GrimoireSpell }

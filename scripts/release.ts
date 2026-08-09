@@ -14,7 +14,7 @@ const steps: [string, string][] = [
   ['parse', 'yarn parse'],
   ['convert', 'yarn convert'],
   ['build', 'yarn build'],
-  ['publish', 'npm publish --tag latest --registry https://registry.npmjs.org'],
+  ['publish', 'npm publish --tag latest'],
 ]
 
 // yarn leaks npm_config_* into child processes (including

@@ -1,7 +1,7 @@
-import { Spell } from '../src/types.ts'
+import { Grimoire, Spell } from '../src/types.ts'
 import spellsJson from '../src/spells.json' assert { type: 'json' }
 
-const spells = spellsJson as Spell[]
+const { spells } = spellsJson as Grimoire
 
 const spellName = process.argv[2]
 if (!spellName) throw new Error('No spell name provided')

@@ -15,6 +15,11 @@ export interface Spell {
   castTime?: number
 }
 
+export interface Grimoire {
+  damageMultiplier: number
+  spells: Spell[]
+}
+
 export type Files = Record<number, string>
 
 export interface DbcSpell {

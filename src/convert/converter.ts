@@ -7,11 +7,11 @@ import {
   spellEffectsBySpellId,
   spellNamesById,
 } from '../dbcData.ts'
-import { DbcSpellEffect, Spell, SpellEffect } from '../types.ts'
+import { DbcSpellEffect, Grimoire, Spell, SpellEffect } from '../types.ts'
 import fs from 'fs/promises'
 import { getDirname } from '../util/files.ts'
 import path from 'path'
-import { getDamage } from './damage.ts'
+import { damageMultiplier, getDamage } from './damage.ts'
 import { SpellEffectType } from '../constants.ts'
 import { groupBy } from '../util/util.ts'
 
@@ -27,13 +27,15 @@ export async function convertAllSpells(test?: boolean) {
     return convertSpell(ID)
   })
 
+  const grimoire: Grimoire = { damageMultiplier, spells }
+
   const destinationPath = `${dirname}/../spells.json`
 
   await fs.mkdir(destinationPath.split(path.sep).slice(0, -1).join(path.sep), {
     recursive: true,
   })
 
-  await fs.writeFile(destinationPath, JSON.stringify(spells), 'utf-8')
+  await fs.writeFile(destinationPath, JSON.stringify(grimoire), 'utf-8')
 }
 
 const optionalField = (

@@ -5,25 +5,47 @@ interface BuildResponse {
   version: string
 }
 
-const response = await fetch('https://wago.tools/api/builds/wow/latest')
-
-if (!response.ok) {
-  throw new Error(`Failed to fetch builds: ${response.status} ${response.statusText}`)
+// wago.tools product per release channel
+const products: Record<string, string> = {
+  live: 'wow',
+  retail: 'wow',
+  ptr: 'wowt',
+  xptr: 'wowxptr',
+  beta: 'wow_beta',
+  classic: 'wow_classic',
 }
 
-const json = (await response.json()) as BuildResponse
-const version = json.version
-console.log(`Latest retail WoW build: ${version}`)
+const isVersion = (arg: string) => /^\d+(\.\d+){3}$/.test(arg)
+
+async function fetchLatestVersion(channel: string) {
+  const product = products[channel.toLowerCase()]
+  if (!product)
+    throw new Error(
+      `Unknown channel '${channel}'. Pass a build version (12.1.0.69189) or one of: ${Object.keys(products).join(', ')}`,
+    )
+
+  const response = await fetch(`https://wago.tools/api/builds/${product}/latest`)
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch builds: ${response.status} ${response.statusText}`)
+  }
+
+  const json = (await response.json()) as BuildResponse
+  console.log(`Latest ${product} build: ${json.version}`)
+  return json.version
+}
+
+// arg is either an explicit build version or a channel name, defaulting to live
+const arg = process.argv[2] ?? 'live'
+const version = isVersion(arg) ? arg : await fetchLatestVersion(arg)
+console.log(`Setting version to ${version}`)
 
 const root = resolve(import.meta.dirname, '..')
 
 // Update scripts/table.ts
 const tablePath = resolve(root, 'scripts/table.ts')
 const tableContent = readFileSync(tablePath, 'utf-8')
-const updatedTable = tableContent.replace(
-  /^(const build = ')[^']+(')/m,
-  `$1${version}$2`,
-)
+const updatedTable = tableContent.replace(/^(const build = ')[^']+(')/m, `$1${version}$2`)
 writeFileSync(tablePath, updatedTable)
 
 // Update package.json

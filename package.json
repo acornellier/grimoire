@@ -22,6 +22,7 @@
     "convert": "tsx ./scripts/convert.ts",
     "build": "cross-env NODE_OPTIONS=\"--max_old_space_size=8192\" vite build &&  esbuild dist/index.js --minify --outfile=dist/index.js --allow-overwrite",
     "full": "yarn update-version && yarn parse && yarn convert && yarn build",
+    "release": "tsx ./scripts/release.ts",
     "id": "tsx ./scripts/id.ts",
     "table": "tsx ./scripts/table.ts",
     "trait": "tsx ./scripts/traitNodeEntry.ts"

@@ -1,17 +1,24 @@
 import { execSync } from 'child_process'
 import { resolve } from 'path'
 
-// usage: yarn release [version|channel]
+// usage: yarn release [version|channel] [--skip-data]
 //   yarn release                 latest live build
 //   yarn release ptr             latest ptr build
 //   yarn release 12.1.0.69189    that exact build
-const arg = process.argv[2]
+//   yarn release --skip-data     reuse existing data (skips update-version and parse)
+const args = process.argv.slice(2)
+const skipData = args.includes('--skip-data')
+const arg = args.find((a) => !a.startsWith('--'))
 
 if (arg && !/^[\w.]+$/.test(arg)) throw new Error(`Invalid version/channel '${arg}'`)
 
 const steps: [string, string][] = [
-  ['update-version', `yarn update-version${arg ? ` ${arg}` : ''}`],
-  ['parse', 'yarn parse'],
+  ...(skipData
+    ? []
+    : ([
+        ['update-version', `yarn update-version${arg ? ` ${arg}` : ''}`],
+        ['parse', 'yarn parse'],
+      ] as [string, string][])),
   ['convert', 'yarn convert'],
   ['build', 'yarn build'],
   ['publish', 'npm publish --tag latest'],

@@ -1,5 +1,5 @@
 import type { Grimoire, Spell, SpellEffect } from './types.ts'
-import spellsJson from './spells.json' assert { type: 'json' }
+import spellsJson from './spells.json' with { type: 'json' }
 
 const { damageMultiplier, spells } = spellsJson as Grimoire
 

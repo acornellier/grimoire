@@ -9,10 +9,13 @@ export interface SpellEffect {
   aoe: boolean
   // Set on damage-over-time effects. `damage` is then the damage of a single
   // tick, and `ticks` (absent when the spell's duration is unknown or
-  // infinite) is how many ticks a full duration deals.
+  // infinite) is how many ticks a full duration deals. `tickOnApply` marks the
+  // auras that tick immediately when applied, which is already counted in
+  // `ticks`.
   periodic?: true
   period?: number
   ticks?: number
+  tickOnApply?: true
 }
 
 export interface Spell {

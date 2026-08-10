@@ -3,6 +3,14 @@ export const SpellEffectType = {
   environmentalDamage: 7,
 } as const
 
+// Bits of SpellMisc.Attributes_5, named after the client's SpellAttr5 enum.
+export const SpellAttribute5 = {
+  // The aura does a periodic tick the moment it is applied, on top of its
+  // regular ticks, so it deals one more tick than its duration allows for.
+  extraInitialPeriod: 0x200,
+  treatAsAreaEffect: 0x8000,
+} as const
+
 export const SpellAuraType = {
   periodicDamage: 3,
   periodicLeech: 53,

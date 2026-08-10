@@ -13,7 +13,7 @@ import fs from 'fs/promises'
 import { getDirname } from '../util/files.ts'
 import path from 'path'
 import { damageMultiplier, getDamage } from './damage.ts'
-import { periodicAuraTypes, SpellEffectType } from '../constants.ts'
+import { periodicAuraTypes, SpellAttribute5, SpellEffectType } from '../constants.ts'
 import { groupBy } from '../util/util.ts'
 
 const dirname = getDirname(import.meta.url)
@@ -114,21 +114,34 @@ function getPeriodic(effect: DbcSpellEffect, duration: number) {
   if (!isPeriodicEffect(effect)) return {}
 
   const period = effect.EffectAuraPeriod
+  const spellMisc = getSpellMisc(effect.SpellID)
+  const tickOnApply = Boolean(
+    spellMisc && (spellMisc.Attributes_5 & SpellAttribute5.extraInitialPeriod) > 0,
+  )
 
-  // A duration of 0 is unknown and a negative one is infinite, so in neither
-  // case can the number of ticks be derived.
-  if (duration <= 0) return { periodic: true as const, period }
+  const ticks = getTicks(duration, period, tickOnApply)
 
   return {
     periodic: true as const,
     period,
-    ticks: Math.max(1, Math.round(duration / period)),
+    ...(tickOnApply ? { tickOnApply: true as const } : {}),
+    ...(ticks ? { ticks } : {}),
   }
+}
+
+// Mirrors the client's tick count: whole periods that fit in the duration, plus
+// the extra tick on application. A duration of 0 is unknown and a negative one
+// is infinite, so neither yields a tick count.
+function getTicks(duration: number, period: number, tickOnApply: boolean) {
+  if (duration <= 0) return 0
+
+  return Math.floor(duration / period) + (tickOnApply ? 1 : 0)
 }
 
 function isAoe(effect: DbcSpellEffect): boolean {
   const spellMisc = getSpellMisc(effect.SpellID)
-  if (spellMisc && (spellMisc.Attributes_5 & 0x8000) > 0) return true
+  if (spellMisc && (spellMisc.Attributes_5 & SpellAttribute5.treatAsAreaEffect) > 0)
+    return true
 
   return effect.EffectRadiusIndex_0 > 0 || effect.EffectRadiusIndex_1 > 0
 }
